@@ -32,3 +32,7 @@ WHERE (start_date <= '2024-11-10' AND end_date >= '2024-11-07');
 
 ALTER TABLE centro_vacacional.reservas
 ADD COLUMN confirmPay BOOLEAN DEFAULT FALSE;
+
+
+ALTER TABLE centro_vacacional.reservas
+ADD COLUMN dateCreate DATETIME DEFAULT CURRENT_TIMESTAMP;

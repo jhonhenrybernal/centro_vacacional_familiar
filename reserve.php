@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $data->email;
     $whatsapp = $data->whatsapp;
 
-    $stmt = $conn->prepare("INSERT INTO reservas (start_date, end_date, name, email, whatsapp) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO reservas (start_date, end_date, name, email, whatsapp, dateCreate) VALUES (?, ?, ?, ?, ?, NOW())");
     $stmt->bind_param("sssss", $start, $end, $name, $email, $whatsapp);
-
+    
     if ($stmt->execute()) {
         // Obtener el ID de la reserva recién insertada
         $reservationId = $conn->insert_id;
