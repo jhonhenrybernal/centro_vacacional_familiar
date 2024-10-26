@@ -1,13 +1,18 @@
 <?php
-require 'vendor/autoload.php'; // Incluir PHPMailer si usas Composer
+require 'vendor/autoload.php'; // Incluir PHPMailer y phpdotenv
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "centro_vacacional";
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// Conectar a la base de datos usando las variables de entorno
+$servername = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
+$dbname = $_ENV['DB_NAME'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -21,25 +26,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt = $conn->prepare("INSERT INTO reservas (start_date, end_date, name, email, whatsapp) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $start, $end, $name, $email, $whatsapp);
+
     if ($stmt->execute()) {
         try {
             $mail = new PHPMailer(true);
-            // Configuración del servidor SMTP de Hostinger
             $mail->isSMTP();
             $mail->SMTPDebug = 0;
-            $mail->Host = 'smtp.hostinger.com';
+            $mail->Host = $_ENV['SMTP_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = 'tecnologia@devquick.co'; // Cambia por tu correo de Hostinger
-            $mail->Password = 'TecJulio2023#'; // Cambia por tu contraseña de Hostinger
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Cambiar a TLS para el puerto 587
-            $mail->Port = 465;
-
-            // Configuración del correo
-            $mail->setFrom('tecnologia@devquick.co', 'Centro Vacacional');
-            $mail->addAddress($email, $name); // Destinatario
-
-            $mail->isHTML(true);
+            $mail->Username = $_ENV['SMTP_USERNAME'];
+            $mail->Password = $_ENV['SMTP_PASSWORD'];
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = $_ENV['SMTP_PORT'];
             $mail->CharSet = 'UTF-8';
+
+            // Correo al cliente
+            $mail->setFrom($_ENV['SMTP_FROM_EMAIL'], $_ENV['SMTP_FROM_NAME']);
+            $mail->addAddress($email, $name);
+            $mail->isHTML(true);
             $mail->Subject = 'Confirmación de Reserva';
             $mail->Body = "
                 <h1>Reserva Confirmada</h1>
@@ -49,24 +53,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p>Nos pondremos en contacto a través de WhatsApp al número $whatsapp.</p>
                 <p>¡Esperamos verte pronto!</p>
             ";
-
             $mail->send();
 
+            // Correo al administrador
+            $mail->clearAddresses();
+            $mail->addAddress('pruebascorreosbernal@gmail.com', 'Administrador');
+            $mail->Subject = 'Nueva Reserva Realizada';
+            $mail->Body = "
+                <h1>Notificación de Nueva Reserva</h1>
+                <p>Se ha realizado una nueva reserva en la plataforma:</p>
+                <p><strong>Nombre del cliente:</strong> $name</p>
+                <p><strong>Correo:</strong> $email</p>
+                <p><strong>Número de WhatsApp:</strong> $whatsapp</p>
+                <p><strong>Fechas de la reserva:</strong> del $start al $end</p>
+            ";
+            $mail->send();
 
-              // Preparar y enviar correo al administrador
-              $mail->clearAddresses(); // Limpiar direcciones previas
-              $mail->addAddress('pruebascorreosbernal@gmail.com', 'Administrador');
-              $mail->Subject = 'Nueva Reserva';
-              $mail->Body = "
-                  <h1>Notificación de Nueva Reserva</h1>
-                  <p>Se ha realizado una nueva reserva en la plataforma:</p>
-                  <p><strong>Nombre del cliente:</strong> $name</p>
-                  <p><strong>Correo:</strong> $email</p>
-                  <p><strong>Número de WhatsApp:</strong> $whatsapp</p>
-                  <p><strong>Fechas de la reserva:</strong> del $start al $end</p>
-              ";
-              $mail->send(); // Enviar el correo al administrador
-            echo json_encode(["message" => "Reserva exitosa y correo enviado"]);
+            echo json_encode(["message" => "Reserva exitosa y correos enviados"]);
         } catch (Exception $e) {
             echo json_encode(["message" => "Reserva exitosa, pero no se pudo enviar el correo. Error: {$mail->ErrorInfo}"]);
         }
