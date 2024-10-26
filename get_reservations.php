@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "vacation_rentals";
+$dbname = "centro_vacacional";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

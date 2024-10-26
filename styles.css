@@ -165,3 +165,14 @@ body {
 #bookingForm button[type="submit"]:hover {
   background-color: #005a4e;
 }
+
+/* Estilo para la leyenda de reservas */
+.legend {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.reserved-indicator {
+  color: green;
+  font-weight: bold;
+}
