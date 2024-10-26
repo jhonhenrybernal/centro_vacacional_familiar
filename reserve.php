@@ -28,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("sssss", $start, $end, $name, $email, $whatsapp);
 
     if ($stmt->execute()) {
+        // Obtener el ID de la reserva recién insertada
+        $reservationId = $conn->insert_id;
+
         try {
             $mail = new PHPMailer(true);
             $mail->isSMTP();
@@ -61,7 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail->Subject = 'Nueva Reserva Realizada';
             $mail->Body = "
                 <h1>Notificación de Nueva Reserva</h1>
-                <p>Se ha realizado una nueva reserva en la plataforma:</p>
+                <p>Se ha realizado una nueva reserva en la plataforma con el siguiente ID:</p>
+                <p><strong>ID de Reserva:</strong> $reservationId</p>
                 <p><strong>Nombre del cliente:</strong> $name</p>
                 <p><strong>Correo:</strong> $email</p>
                 <p><strong>Número de WhatsApp:</strong> $whatsapp</p>

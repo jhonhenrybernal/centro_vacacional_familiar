@@ -28,3 +28,7 @@ WHERE (start_date <= '2024-11-30' AND end_date >= '2024-11-01');
 -- 4. Verificar disponibilidad de fechas para evitar conflictos
 SELECT * FROM centro_vacacional.reservas
 WHERE (start_date <= '2024-11-10' AND end_date >= '2024-11-07');
+
+
+ALTER TABLE centro_vacacional.reservas
+ADD COLUMN confirmPay BOOLEAN DEFAULT FALSE;

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Pago</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    .container h1 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      background-color: #00796b;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #005a4e;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Confirmar Pago de Reserva</h1>
+    <div class="form-group">
+      <label for="reservationId">ID de Reserva</label>
+      <input type="text" id="reservationId" placeholder="Ingrese el ID de la reserva">
+    </div>
+    <div class="form-group">
+      <label for="token">Token de Autorización</label>
+      <input type="text" id="token" placeholder="Ingrese el token de autorización">
+    </div>
+    <button onclick="confirmarPago()">Confirmar Pago</button>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    function confirmarPago() {
+      const reservationId = document.getElementById('reservationId').value;
+      const token = document.getElementById('token').value;
+      const messageEl = document.getElementById('message');
+
+      if (!reservationId || !token) {
+        messageEl.textContent = 'Por favor, complete todos los campos.';
+        messageEl.style.color = 'red';
+        return;
+      }
+
+      fetch('confirm_payment.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ reservationId: reservationId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        messageEl.textContent = data.message;
+        messageEl.style.color = data.message.includes('exitosamente') ? 'green' : 'red';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        messageEl.textContent = 'Hubo un error al confirmar el pago.';
+        messageEl.style.color = 'red';
+      });
+    }
+  </script>
+</body>
+</html>
