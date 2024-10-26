@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renta Casa Vacacional</title>
+  <meta name="description" content="Casa vacacional familiar cerca del mar con increíbles vistas, dos habitaciones, cocina y patio, ideal para relajarse.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script> 
+  <script src="app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Casa Vacacional Familiar HB</h1>
+    <p>¡Disfruta de un escape frente al mar con todas las comodidades!</p>
+  </header>
+
+  <!-- Sección de Imágenes y Video -->
+  <section class="video">
+    <h2>Conoce nuestro hospedaje</h2>
+    <video controls src="videos/tour.mp4"></video>
+  </section>
+
+  <!-- Calendario de Reservas -->
+  <section id="reservation">
+    <h2>Reserva Ahora</h2>
+    <div id="calendar"></div>
+    <div id="reservation-form" style="display: none;">
+      <h3>Confirmar Reserva</h3>
+      <p>Fechas Seleccionadas: <span id="selected-dates"></span></p>
+      <form id="bookingForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="whatsapp">Número de WhatsApp:</label>
+        <input type="tel" id="whatsapp" name="whatsapp" required>
+        
+        <button type="submit">Confirmar Reserva</button>
+      </form>
+    </div>
+  </section>
+  <section id="details">
+    <h2>Instalaciones</h2>
+    <ul>
+      <li>Habitación de pareja con cama doble</li>
+      <li>Habitación sencilla con dos camas individuales</li>
+      <li>Cocina equipada</li>
+      <li>Sala cómoda y espaciosa</li>
+      <li>Patio con vistas al mar</li>
+      <li>Transporte aeropuerto - hospedaje</li>
+      <li>Noche por persona mayor 50</li>
+      <li>Noche por menor 30</li>
+    </ul>
+  
+    <!-- Galería de Imágenes -->
+    <div class="gallery">
+            <img src="imagenes/Imagen de WhatsApp 2024-10-25 a las 18.03.21_91f4bbc1.jpg" alt="Vista de atardecer sobre montañas">
+            <img src="imagenes/IMG-20241026-WA0003.jpg" alt="Atardecer en la playa">
+            <img src="imagenes/IMG-20241026-WA0004.jpg" alt="Vista del mar">
+            <img src="imagenes/IMG-20241026-WA0005.jpg" alt="Puerto con yates y edificios">
+            <img src="imagenes/IMG-20241026-WA0006.jpg" alt="Otra vista del puerto">
+            <img src="imagenes/IMG-20241026-WA0007.jpg" alt="Habitación con cama sencilla">
+            <img src="imagenes/IMG-20241026-WA0008.jpg" alt="Vista de la habitación con ventana">
+            <img src="imagenes/IMG-20241026-WA0009.jpg" alt="Otra cama individual en habitación">
+            <img src="imagenes/IMG-20241026-WA0010.jpg" alt="Vista de habitación con ventana">
+            <img src="imagenes/IMG-20241026-WA0011.jpg" alt="Cama doble en habitación">
+            <img src="imagenes/IMG-20241026-WA0012.jpg" alt="Baño con cortina decorativa">
+            <img src="imagenes/IMG-20241026-WA0013.jpg" alt="Sala con decoración y mesa de centro">
+            <img src="imagenes/IMG-20241026-WA0014.jpg" alt="Espacio de ejercicio con vista">
+            <img src="imagenes/IMG-20241026-WA0015.jpg" alt="Cocina equipada">
+          
+    </div>
+  </section>
+
+  <!-- Integración de Google Maps -->
+  <section id="location">
+    <h2>Ubicación</h2>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+  </section>
+  <footer>
+    <p>Desarrollado por <a href="https://devquick.co" target="_blank">DevQuick</a> - devquick.co. Todos los derechos reservados.</p>
+  </footer>
+  <script>
+    const mapLocation = [11.219968, -74.158460]; // Coordenadas de Bogotá, Colombia
+    const map = L.map('map').setView(mapLocation, 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker(mapLocation).addTo(map)
+      .bindPopup('Ubicación deseada')
+      .openPopup();
+  </script>
+</body>
+</html>
