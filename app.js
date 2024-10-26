@@ -20,6 +20,11 @@
   
         // Escucha el envío del formulario de reserva
         bookingForm.onsubmit = function (event) {
+          Swal.fire({
+            title: "Reserva realizada!",
+            text: "Estaremos en contacto pronto y su reserva llegara via correo!",
+            icon: "success"
+          });
           event.preventDefault(); // Evita el envío tradicional del formulario
   
           const name = document.getElementById('name').value;

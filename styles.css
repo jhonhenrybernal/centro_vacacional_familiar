@@ -105,3 +105,63 @@ body {
     text-decoration: underline;
   }
   
+
+  /* Estilos generales para el formulario */
+#bookingForm {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+/* Estilos para las etiquetas */
+#bookingForm label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Estilos para los campos de entrada */
+#bookingForm input[type="text"],
+#bookingForm input[type="email"],
+#bookingForm input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+/* Cambiar el borde cuando se enfoca */
+#bookingForm input[type="text"]:focus,
+#bookingForm input[type="email"]:focus,
+#bookingForm input[type="tel"]:focus {
+  border-color: #00796b;
+  outline: none;
+}
+
+/* Estilos para el botón */
+#bookingForm button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #00796b;
+  color: #fff;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Cambiar el color del botón al pasar el mouse */
+#bookingForm button[type="submit"]:hover {
+  background-color: #005a4e;
+}
