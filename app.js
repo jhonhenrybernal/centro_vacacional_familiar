@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const reservationForm = document.getElementById('reservation-form');
   const selectedDatesEl = document.getElementById('selected-dates');
   const bookingForm = document.getElementById('bookingForm');
+  const processingMessage = document.getElementById('processingMessage');
 
   // Ejemplo de fechas reservadas preexistentes
   const reservedDates = [
@@ -29,12 +30,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Muestra las fechas seleccionadas en el formulario
       selectedDatesEl.textContent = `${start} a ${end}`;
+          
+      // Muestra el mensaje de "Procesando..."
       reservationForm.style.display = 'block';
-
+    
       // Enviar el formulario de reserva
       bookingForm.onsubmit = function (event) {
         event.preventDefault();
-
+        processingMessage.style.display = 'block';
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const whatsapp = document.getElementById('whatsapp').value;
@@ -52,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
             text: "Estaremos en contacto pronto y su reserva llegará vía correo!",
             icon: "success"
           });
+          // Oculta el mensaje de "Procesando..." tras completar la solicitud
+          processingMessage.style.display = 'none';
 
           // Oculta el formulario y actualiza el calendario
           reservationForm.style.display = 'none';
